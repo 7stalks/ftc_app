@@ -38,7 +38,12 @@ public class StevensRunMode extends LinearOpMode {
             LeftMotor.setPower(tgtPower);
             telemetry.addData("Target Power", tgtPower);
             telemetry.addData("Motor Power", LeftMotor.getPower());
-            telemetry.addData("Status", "Running");
+            if (tgtPower == 0) {
+                telemetry.addData("Status", "Waiting..");
+            } else {
+                telemetry.addData("Status", "Running");
+            }
+            telemetry.addData("Steven is awesome", "✓");
             telemetry.update();
         }
     }
