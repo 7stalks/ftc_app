@@ -52,7 +52,7 @@ public class GerritRunMode extends LinearOpMode {
             telemetry.addData("Left Motor Power", motorTest.getPower());
             telemetry.addData("right Motor Power" , motorTest2.getPower());
             telemetry.addData("Distance (cm)", sensorColorRange.getDistance (DistanceUnit.CM));
-            telemetry.addData("status", "Running");
+            telemetry.addData("status", "Running1");
             telemetry.update();
         }
     }
