@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class GerritRunMode extends LinearOpMode {
     private Gyroscope imu;
     private DcMotor motorTest;
+    private DcMotor motorTest2;
     private DigitalChannel digitalTouch;
     private DistanceSensor sensorColorRange;
     private Servo servoTest;
@@ -22,6 +23,7 @@ public class GerritRunMode extends LinearOpMode {
     public void runOpMode() {
         imu = hardwareMap.get(Gyroscope.class, "imu");
         motorTest = hardwareMap.get(DcMotor.class, "motorTest");
+        motorTest2 = hardwareMap.get(DcMotor.class, "motorTest2");
         digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
         sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
         servoTest = hardwareMap.get(Servo.class, "servoTest");
@@ -33,6 +35,8 @@ public class GerritRunMode extends LinearOpMode {
         while (opModeIsActive()) {
             tgtPower = -this.gamepad1.left_stick_y;
             motorTest.setPower(tgtPower);
+            tgtPower = this.gamepad1.right_stick_y;
+            motorTest2.setPower(tgtPower);
             if (gamepad1.y) {
                 servoTest.setPosition(0);
             } else if (gamepad1.x || gamepad1.b) {
@@ -42,7 +46,8 @@ public class GerritRunMode extends LinearOpMode {
             }
             telemetry.addData("Servo Position", servoTest.getPosition());
             telemetry.addData("Target Power", tgtPower);
-            telemetry.addData("Motor Power", motorTest.getPower());
+            telemetry.addData("Left Motor Power", motorTest.getPower());
+            telemetry.addData("right Motor Power" , motorTest2.getPower());
             telemetry.addData("Distance (cm)", sensorColorRange.getDistance (DistanceUnit.CM));
             telemetry.addData("status", "Running");
             telemetry.update();
