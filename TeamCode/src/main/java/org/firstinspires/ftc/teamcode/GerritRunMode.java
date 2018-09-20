@@ -32,11 +32,14 @@ public class GerritRunMode extends LinearOpMode {
         waitForStart();
         // run until the end of the match (driver presses STOP)
         double tgtPower = 0;
+        double tgtPower2 = 0;
         while (opModeIsActive()) {
             tgtPower = -this.gamepad1.left_stick_y;
-            motorTest.setPower(tgtPower);
-            tgtPower = this.gamepad1.right_stick_y;
+            tgtPower2 = this.gamepad1.left_stick_x;
+            motorTest.setPower(-tgtPower);
+            motorTest.setPower(-tgtPower2);
             motorTest2.setPower(tgtPower);
+            motorTest2.setPower(-tgtPower2);
             if (gamepad1.y) {
                 servoTest.setPosition(0);
             } else if (gamepad1.x || gamepad1.b) {
