@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp
 public class GerritRunMode extends LinearOpMode {
     private Gyroscope imu;
@@ -23,12 +25,26 @@ public class GerritRunMode extends LinearOpMode {
         digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
         sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
         servoTest = hardwareMap.get(Servo.class, "servoTest");
-        telemetry.addData("yes", "Initialized"); telemetry.update();
+        telemetry.addData("servo", "Initialized"); telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         // run until the end of the match (driver presses STOP)
+        double tgtPower = 0;
         while (opModeIsActive()) {
-            telemetry.addData("Status", "Running");
+            tgtPower = -this.gamepad1.left_stick_y;
+            motorTest.setPower(tgtPower);
+            if (gamepad1.y) {
+                servoTest.setPosition(0);
+            } else if (gamepad1.x || gamepad1.b) {
+                servoTest.setPosition(0.5);
+            } else if (gamepad1.a) {
+                servoTest.setPosition(1);
+            }
+            telemetry.addData("Servo Position", servoTest.getPosition());
+            telemetry.addData("Target Power", tgtPower);
+            telemetry.addData("Motor Power", motorTest.getPower());
+            telemetry.addData("Distance (cm)", sensorColorRange.getDistance (DistanceUnit.CM));
+            telemetry.addData("status", "Running");
             telemetry.update();
         }
     }
