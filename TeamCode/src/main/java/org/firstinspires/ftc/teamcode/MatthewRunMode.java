@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp
 public class MatthewRunMode extends LinearOpMode {
     private Gyroscope imu;
@@ -29,10 +31,22 @@ public class MatthewRunMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         double tgtPower = 0;
         while (opModeIsActive()) {
-            tgtPower = -this.gamepad1.left_stick_y; motorTest.setPower(tgtPower);
+            tgtPower = -this.gamepad1.left_stick_y;
+            motorTest.setPower(tgtPower);
+            if(gamepad1.y) {
+                // move to 0 degrees.
+                servoTest.setPosition(0);
+            } else if (gamepad1.x || gamepad1.b) {
+                // move to 90 degrees.
+                servoTest.setPosition(0.5);
+            } else if (gamepad1.a) {
+                // move to 180 degrees.
+                servoTest.setPosition(1);
+            }
             telemetry.addData("Target Power", tgtPower);
             telemetry.addData("Motor Power", motorTest.getPower());
             telemetry.addData("Status", "Running");
+            telemetry.addData("Distance (cm)", sensorColorRange.getDistance(DistanceUnit.CM));
             telemetry.update();
 
 
