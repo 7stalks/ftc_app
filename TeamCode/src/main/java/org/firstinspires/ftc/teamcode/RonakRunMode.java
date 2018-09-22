@@ -33,13 +33,13 @@ public class RonakRunMode extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         // run until the end of the match (driver presses STOP)
-        double tgtPower;
-        double tgtPower1;
+        double tgtPowerY;
+        double tgtPowerX;
         while (opModeIsActive()) {
-            tgtPower = -this.gamepad1.left_stick_y;
-            tgtPower1 = this.gamepad1.right_stick_y;
-            motorTest.setPower(tgtPower);
-            motorTest2.setPower(tgtPower1);
+            tgtPowerY = -this.gamepad1.left_stick_y;
+            tgtPowerX = this.gamepad1.left_stick_x;
+            motorTest.setPower(tgtPowerY);
+            motorTest2.setPower(tgtPowerX);
             // check to see if we need to move the servo.
             if (gamepad1.y) {
                 // move to 0 degrees.
@@ -52,10 +52,10 @@ public class RonakRunMode extends LinearOpMode {
                 servoTest.setPosition(1);
             }
             telemetry.addData("Servo Position", servoTest.getPosition());
-            telemetry.addData("Target Power", tgtPower);
-            telemetry.addData("Motor Power", motorTest.getPower());
-            telemetry.addData("Target Power2", tgtPower1);
-            telemetry.addData("Motor Power2", motorTest2.getPower());
+            telemetry.addData("Target PowerY", tgtPowerY);
+            telemetry.addData("Motor PowerY", motorTest.getPower());
+            telemetry.addData("Target PowerX", tgtPowerX);
+            telemetry.addData("Motor PowerX", motorTest2.getPower());
             telemetry.addData("Distance (cm)", sensorColorRange.getDistance(DistanceUnit.CM));
             telemetry.addData("Status", "Running");
             telemetry.update();
