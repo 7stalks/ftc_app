@@ -36,10 +36,36 @@ public class GerritRunMode extends LinearOpMode {
         while (opModeIsActive()) {
             tgtPower = this.gamepad1.left_stick_y;
             tgtPower2 = -this.gamepad1.left_stick_x;
-            motorTest.setPower(tgtPower);
-            motorTest.setPower(tgtPower2);
-            motorTest2.setPower(-tgtPower);
-            motorTest2.setPower(tgtPower2);
+
+            if (tgtPower!=0 || tgtPower2!=0) {
+                if (tgtPower>0) {
+                    telemetry.addData("tgtPower>0", tgtPower);
+                    motorTest.setPower(-((tgtPower+tgtPower2)/2));
+                    motorTest2.setPower(((tgtPower+tgtPower2)/2));
+                }
+                if (tgtPower<0) {
+                    telemetry.addData("tgtPower<0", tgtPower);
+                    motorTest.setPower(-((tgtPower+tgtPower)/2));
+                    motorTest2.setPower(((tgtPower+tgtPower2)/2));
+                }
+                if (tgtPower2>0) {
+                    telemetry.addData("tgtPower2>0", tgtPower2);
+                    motorTest.setPower((tgtPower+tgtPower2)/2);
+                    motorTest2.setPower((tgtPower+tgtPower2)/2);
+                }
+                if (tgtPower2<0) {
+                    telemetry.addData("tgtPower2<0", tgtPower2);
+                    motorTest.setPower((tgtPower+tgtPower2)/2);
+                    motorTest2.setPower((tgtPower+tgtPower2)/2);
+                }
+                telemetry.update();
+            } else {
+                telemetry.addData("tgtPower=0", tgtPower);
+                telemetry.addData("tgtPower2=0", tgtPower2);
+                motorTest.setPower(0);
+                motorTest2.setPower(0);
+            }
+
             if (gamepad1.y) {
                 servoTest.setPosition(0);
             } else if (gamepad1.x || gamepad1.b) {
@@ -47,10 +73,13 @@ public class GerritRunMode extends LinearOpMode {
             } else if (gamepad1.a) {
                 servoTest.setPosition(1);
             }
+            telemetry.addData("tgtPower>0", tgtPower);
+            telemetry.addData("tgtPower<0", tgtPower);
+            telemetry.addData("tgtPower2>0", tgtPower2);
+            telemetry.addData("tgtPower2<0", tgtPower2);
+            telemetry.addData("tgtPower=0", tgtPower);
+            telemetry.addData("tgtPower2=0", tgtPower2);
             telemetry.addData("Servo Position", servoTest.getPosition());
-            telemetry.addData("Target Power", tgtPower);
-            telemetry.addData("Left Motor Power", motorTest.getPower());
-            telemetry.addData("right Motor Power" , motorTest2.getPower());
             telemetry.addData("Distance (cm)", sensorColorRange.getDistance (DistanceUnit.CM));
             telemetry.addData("status", "Running");
             telemetry.update();
