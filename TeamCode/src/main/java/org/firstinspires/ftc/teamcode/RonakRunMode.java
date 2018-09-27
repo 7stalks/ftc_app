@@ -11,11 +11,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp
+@TeleOp(name="Ronakdestroyermode")
 public class RonakRunMode extends LinearOpMode {
     private Gyroscope imu;
-    private DcMotor motorTest;
-    private DcMotor motorTest2;
+    private DcMotor leftDrive;
+    private DcMotor rightDrive;
     private DigitalChannel digitalTouch;
     private DistanceSensor sensorColorRange;
     private Servo servoTest;
@@ -23,8 +23,8 @@ public class RonakRunMode extends LinearOpMode {
     @Override
     public void runOpMode() {
         imu = hardwareMap.get(Gyroscope.class, "imu");
-        motorTest = hardwareMap.get(DcMotor.class, "motorTest");
-        motorTest2 = hardwareMap.get(DcMotor.class, "motorTest2");
+        leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
+        rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
         digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
         sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
         servoTest = hardwareMap.get(Servo.class, "servoTest");
@@ -38,8 +38,8 @@ public class RonakRunMode extends LinearOpMode {
         while (opModeIsActive()) {
             tgtPowerY = -this.gamepad1.left_stick_y;
             tgtPowerX = this.gamepad1.left_stick_x;
-            motorTest.setPower(tgtPowerY);
-            motorTest2.setPower(tgtPowerX);
+            leftDrive.setPower(tgtPowerY);
+            rightDrive.setPower(tgtPowerX);
             // check to see if we need to move the servo.
             if (gamepad1.y) {
                 // move to 0 degrees.
@@ -53,9 +53,9 @@ public class RonakRunMode extends LinearOpMode {
             }
             telemetry.addData("Servo Position", servoTest.getPosition());
             telemetry.addData("Target PowerY", tgtPowerY);
-            telemetry.addData("Motor PowerY", motorTest.getPower());
+            telemetry.addData("Motor PowerY", leftDrive.getPower());
             telemetry.addData("Target PowerX", tgtPowerX);
-            telemetry.addData("Motor PowerX", motorTest2.getPower());
+            telemetry.addData("Motor PowerX", rightDrive.getPower());
             telemetry.addData("Distance (cm)", sensorColorRange.getDistance(DistanceUnit.CM));
             telemetry.addData("Status", "Running");
             telemetry.update();
