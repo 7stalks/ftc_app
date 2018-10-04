@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name=" Gerrit Drive Arcade", group="Exercises")
 public class GerritRunMode extends LinearOpMode {
-    DcMotor leftDrive, rightDrive;
-    float   leftPower, rightPower, xValue, yValue;
+    DcMotor leftDrive, rightDrive, chainDrive;
+    float   leftPower, rightPower, xValue, yValue, rxValue;
 
     // init button is  pressed.
     @Override
@@ -16,6 +16,7 @@ public class GerritRunMode extends LinearOpMode {
     {
         leftDrive = hardwareMap.dcMotor.get("leftDrive");
         rightDrive = hardwareMap.dcMotor.get("rightDrive");
+        chainDrive = hardwareMap.dcMotor.get("chainDrive");
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.addData("Mode", "waiting");
@@ -29,12 +30,15 @@ public class GerritRunMode extends LinearOpMode {
         {
             yValue = gamepad1.left_stick_y;
             xValue = gamepad1.left_stick_x;
+            rxValue = gamepad1.right_stick_y;
 
-            leftPower =  yValue - xValue;
-            rightPower = yValue + xValue;
+            rightPower =  yValue - xValue;
+            leftPower = yValue + xValue;
 
             leftDrive.setPower(Range.clip(leftPower, -1.0, 1.0));
             rightDrive.setPower(Range.clip(rightPower, -1.0, 1.0));
+
+            chainDrive.setPower(rxValue);
 
             telemetry.addData("Mode", "running");
             telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
