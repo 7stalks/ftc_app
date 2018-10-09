@@ -18,6 +18,7 @@ public class GerritRunMode extends LinearOpMode {
         rightDrive = hardwareMap.dcMotor.get("rightDrive");
         chainDrive = hardwareMap.dcMotor.get("chainDrive");
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
+//        chainDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         telemetry.addData("Mode", "waiting");
         telemetry.update();
@@ -25,6 +26,9 @@ public class GerritRunMode extends LinearOpMode {
         // wait for start button.
 
         waitForStart();
+
+        int intPosition, Position;
+        intPosition = chainDrive.getCurrentPosition();
 
         while (opModeIsActive())
         {
@@ -38,11 +42,27 @@ public class GerritRunMode extends LinearOpMode {
             leftDrive.setPower(Range.clip(leftPower, -1.0, 1.0));
             rightDrive.setPower(Range.clip(rightPower, -1.0, 1.0));
 
-            chainDrive.setPower(rxValue);
+            Position = chainDrive.getCurrentPosition();
+
+            if (Position >= 852) {
+                chainDrive.setPower(0);
+            }
+            if (rxValue <= 0) {
+                chainDrive.setPower(rxValue);
+            }
+            if (Position <= 0) {
+                chainDrive.setPower(0);
+            }
+            if (rxValue >= 0) {
+                chainDrive.setPower(rxValue);
+            }
+
 
             telemetry.addData("Mode", "running");
             telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
             telemetry.addData("power", "  left=" + leftDrive + "  right=" + rightDrive);
+            telemetry.addData( "start position",intPosition);
+            telemetry.addData("chain position", Position);
             telemetry.update();
 
             idle();
