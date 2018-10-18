@@ -13,8 +13,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @TeleOp(name="Matthew is great at FortNite")
 public class MatthewRunMode extends LinearOpMode {
     private Gyroscope imu;
-    private DcMotor leftDrive;
-    private DcMotor rightDrive;
+    private DcMotor leftDrive1;
+    private DcMotor rightDrive1;
+    private DcMotor rightDrive2;
+    private DcMotor leftDrive2;
     private DcMotor chainDrive;
     private DigitalChannel digitalTouch;
     private DistanceSensor sensorColorRange;
@@ -23,9 +25,11 @@ public class MatthewRunMode extends LinearOpMode {
     @Override
     public void runOpMode() {
         imu = hardwareMap.get(Gyroscope.class, "imu");
-        leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
-        chainDrive = hardwareMap. get(DcMotor.class, "chaindrive");
+        leftDrive1 = hardwareMap.get(DcMotor.class, "leftDrive1");
+        rightDrive1= hardwareMap.get(DcMotor.class, "rightDrive1");
+        chainDrive = hardwareMap.get(DcMotor.class, "chaindrive");
+        leftDrive2 = hardwareMap.get(DcMotor.class, "leftDrive2");
+        rightDrive2 = hardwareMap.get(DcMotor.class,  "rightdrive2");
         //digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
         //sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
         //servoTest = hardwareMap.get(Servo.class, "servoTest");
@@ -39,8 +43,8 @@ public class MatthewRunMode extends LinearOpMode {
         while (opModeIsActive()) {
             tgtPowerY = -this.gamepad1.left_stick_y;
             tgtPowerX = this.gamepad1.left_stick_x;
-            leftDrive.setPower(tgtPowerY);
-            rightDrive.setPower(tgtPowerX);
+            leftDrive1.setPower(tgtPowerY);
+            rightDrive1.setPower(tgtPowerX);
             tgtchain = this.gamepad1.right_stick_y;
 //            if(gamepad1.y) {
 //                // move to 0 degrees.
@@ -53,9 +57,9 @@ public class MatthewRunMode extends LinearOpMode {
 //                servoTest.setPosition(1);
 //            }
             telemetry.addData("Target PowerY", tgtPowerY);
-            telemetry.addData("Motor PowerY", leftDrive.getPower());
+            telemetry.addData("Motor PowerY", leftDrive1.getPower());
             telemetry.addData("Target PowerX", tgtPowerX);
-            telemetry.addData("Motor PowerX", rightDrive.getPower());
+            telemetry.addData("Motor PowerX", rightDrive1.getPower());
             telemetry.addData( "Target PowerY, tgtChain", chainDrive.getPower());
             telemetry.addData( "Motor PowerY", chainDrive.getPower());
 //            telemetry.addData("Distance (cm)", sensorColorRange.getDistance(DistanceUnit.CM));
