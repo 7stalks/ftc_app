@@ -19,7 +19,7 @@ public class GerritRunMode extends LinearOpMode {
         leftDrive = hardwareMap.dcMotor.get("leftDrive");
         rightDrive = hardwareMap.dcMotor.get("rightDrive");
         chainDrive = hardwareMap.dcMotor.get("chainDrive");
-        sArm = hardwareMap.servo.get("clawL");
+        sArm = hardwareMap.servo.get("clawR");
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
 
 //        chainDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -57,28 +57,30 @@ public class GerritRunMode extends LinearOpMode {
                 }
             }
 
-            {
-                if (gamepad1.x) {
-                    sArm.setPosition(0);
-                } else if (gamepad1.b) {
-                    sArm.setPosition(0.6);
-                }
+
+            if (gamepad1.x) {
+                sArm.setPosition(0);
             }
-                leftDrive.setPower(Range.clip(leftPower, -togglePower, togglePower));
-                rightDrive.setPower(Range.clip(rightPower, -togglePower, togglePower));
-
-
-                chainDrive.setPower(ryValue);
-
-
-                telemetry.addData("Mode", "running");
-                telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
-                telemetry.addData("power", "  left=" + leftDrive + "  right=" + rightDrive);
-                telemetry.addData("start position", intPosition);
-                telemetry.addData("rxValue", rxValue);
-                telemetry.update();
-
-                idle();
+            if (gamepad1.b) {
+                sArm.setPosition(0.6);
             }
+
+            leftDrive.setPower(Range.clip(leftPower, -togglePower, togglePower));
+            rightDrive.setPower(Range.clip(rightPower, -togglePower, togglePower));
+
+
+            chainDrive.setPower(ryValue);
+
+
+            telemetry.addData("Mode", "running");
+            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
+            telemetry.addData("power", "  left=" + leftDrive + "  right=" + rightDrive);
+            telemetry.addData("start position", intPosition);
+            telemetry.addData("rxValue", rxValue);
+            telemetry.update();
+
+            idle();
         }
+
     }
+}
