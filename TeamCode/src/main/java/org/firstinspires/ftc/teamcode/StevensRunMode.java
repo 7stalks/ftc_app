@@ -3,50 +3,57 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Gyroscope;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
-// Created by Steve
 
 @TeleOp(name="Steven Test Tank Mode")
 public class StevensRunMode extends LinearOpMode {
 
-    private Gyroscope imu;
-    private DcMotor LeftMotor;
-    private DcMotor RightMotor;
-    private DigitalChannel digitalTouch;
-    private DistanceSensor sensorColorRange;
-    private Servo ServoTest;
+    HardwareRobob        robot   = new HardwareRobob();   // Use a Robob's hardware
+    private ElapsedTime  runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
-        imu = hardwareMap.get(Gyroscope.class, "imu");
-        LeftMotor = hardwareMap.get(DcMotor.class, "leftDrive");
-        RightMotor = hardwareMap.get(DcMotor.class, "rightDrive");
-//        digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
-//        sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
-//        ServoTest = hardwareMap.get(Servo.class, "ServoTest");
-        telemetry.addData("Status", "Initialized");
+
+        robot.init(hardwareMap);
+
+        robot.latchArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.latchArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        telemetry.addData("Robob Ready to run.",  "Latch Starting at %7d", robot.latchArm.getCurrentPosition());
         telemetry.update();
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         // run until the end of the match (driver presses STOP)
-        double tgtPowerL;
-        double tgtPowerR;
+        double latchPower;
         while (opModeIsActive()) {
-            tgtPowerL = -this.gamepad1.left_stick_y;
-            tgtPowerR = this.gamepad1.right_stick_y;
-            LeftMotor.setPower(tgtPowerL);
-            RightMotor.setPower(tgtPowerR);
-            telemetry.addData("Left Target Power", tgtPowerL);
-            telemetry.addData("Right Target Power", tgtPowerR);
-            telemetry.addData("Left Motor Power", LeftMotor.getPower());
-            telemetry.addData("Right Motor Power", RightMotor.getPower());
-            telemetry.addData("Status", "Running");
+            robot.leftDrive.setPower(this.gamepad1.left_stick_y);
+            robot.rightDrive.setPower(this.gamepad1.right_stick_y);
+
+
+            // Handle the Latch Arm
+            latchPower = 0.5;
+            if (robot.latchArm.getCurrentPosition() > 250 && robot.latchArm.getCurrentPosition() < 8250) {
+                latchPower = 1.0;
+            }
+            if (this.gamepad1.left_bumper) {
+                robot.latchArm.setPower(latchPower);
+            } else {
+                if (this.gamepad1.right_bumper) {
+                    robot.latchArm.setPower(-latchPower);
+                } else {
+                    robot.latchArm.setPower(0);
+                }
+            }
+            telemetry.addData("Latch Arm",  "%7d", robot.latchArm.getCurrentPosition());
             telemetry.update();
+
+
         }
+        telemetry.addData("Final Latch",  "Latch at %7d", robot.latchArm.getCurrentPosition());
+        telemetry.update();
+
     }
 }
