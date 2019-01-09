@@ -27,14 +27,34 @@ public class GerritAutonomous extends LinearOpMode {
 
         waitForStart();
         {
-            chainDrive.setPower(1);
+            chainDrive.setPower(.5);
             Thread.sleep(3500);
+
+            chainDrive.setPower(0.0);
+            Thread.sleep(1);
 
             sArm.setPosition(0.6);
-            Thread.sleep(2000);
+            Thread.sleep(1000);
 
-            chainDrive.setPower(-1);
-            Thread.sleep(3500);
+            chainDrive.setPower(-.5);
+            Thread.sleep(1000);
+
+            chainDrive.setPower(0.0);
+            Thread.sleep(1);
+
+            leftDrive.setPower(-.5);
+            rightDrive.setPower(-.5);
+
+            Thread.sleep(500);
+
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+
+            Thread.sleep(1);
+
+
+
+
 
             telemetry.update();
 
